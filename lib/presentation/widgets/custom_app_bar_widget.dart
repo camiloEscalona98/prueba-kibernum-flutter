@@ -10,8 +10,7 @@ AppBar customAppBar(BuildContext context, String title) {
       ).createShader(bounds),
       child: Text(
         title,
-        style: const TextStyle(
-            color: Colors.white), // Usa un color fijo para el texto
+        style: const TextStyle(color: Colors.white),
       ),
     ),
     centerTitle: true,
