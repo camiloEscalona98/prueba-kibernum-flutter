@@ -17,4 +17,15 @@ class ProductsRepositoriesImpl implements ProductsRepositories {
         .map((e) => ProductModel.fromJson(e))
         .toList();
   }
+
+  @override
+  Future<ProductModel> getProductById(int id) async {
+    var response = await Dio().get('${Constants.apiUrl}/products/$id');
+
+    if (response.statusCode != 200) {
+      throw Exception(response.statusMessage);
+    }
+
+    return ProductModel.fromJson(response.data);
+  }
 }

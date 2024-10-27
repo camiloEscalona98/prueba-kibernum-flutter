@@ -31,10 +31,7 @@ class ProductGridView extends StatelessWidget {
         } else {
           final product = products[index];
           return ProductCard(
-            image: product.image,
-            title: product.title,
-            description: product.description,
-            price: product.price,
+            product: product,
           );
         }
       },

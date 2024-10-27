@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import 'package:prueba_ccu/presentation/widgets/custom_button_widget.dart';
 import 'package:prueba_ccu/presentation/widgets/custom_text_field_widget.dart';
@@ -45,7 +46,9 @@ class _LoginFormState extends State<LoginForm> {
           text: 'Iniciar Sesión',
           isExpanded: true,
           hasBorder: false,
-          onPressed: () {},
+          onPressed: () {
+            context.go('/products');
+          },
           styleType: ButtonStyleType.primary,
         )
       ],

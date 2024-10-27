@@ -1,25 +1,56 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:prueba_ccu/logic/blocs/products/products_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:prueba_ccu/presentation/screens/details/details_screen.dart';
+import 'package:prueba_ccu/presentation/screens/login/login_screen.dart';
 
 import 'package:prueba_ccu/presentation/screens/products/products_screen.dart';
 
+import 'logic/blocs/blocs.dart';
 import 'utils/utils.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(const MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ProductsBloc()),
+        BlocProvider(
+          create: (context) => ProductBloc(),
+        )
+        // Añade otros BLoCs aquí
+      ],
+      child: MaterialApp.router(
         theme: AppTheme.darkTheme,
-        home: MultiBlocProvider(providers: [
-          BlocProvider(create: (context) => ProductsBloc()),
-        ], child: ProductsScreen()));
+        routerConfig: router,
+      ),
+    );
   }
 }
+
+// Define tu router aquí
+final router = GoRouter(
+  debugLogDiagnostics: true,
+  initialLocation: '/',
+  routes: [
+    GoRoute(
+      path: '/',
+      builder: (context, state) => const LoginScreen(),
+    ),
+    GoRoute(
+      path: '/products',
+      builder: (context, state) => const ProductsScreen(),
+    ),
+    GoRoute(
+      path: '/details/:id',
+      builder: (context, state) =>
+          DetailsScreen(id: state.pathParameters['id']!),
+    ),
+  ],
+);

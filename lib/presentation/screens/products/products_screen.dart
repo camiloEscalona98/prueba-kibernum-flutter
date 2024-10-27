@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
-import 'package:prueba_ccu/data/models/models.dart';
+
 import '../../../logic/blocs/blocs.dart';
 import '../../widgets/widgets.dart';
 import 'widgets/widgets.dart';
