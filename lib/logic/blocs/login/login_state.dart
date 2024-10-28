@@ -1,6 +1,27 @@
-part of 'login_bloc.dart';
+import 'package:equatable/equatable.dart';
 
-@immutable
-sealed class LoginState {}
+class LoginState extends Equatable {
+  final bool loading;
+  final String error;
+  final String? token;
 
-final class LoginInitial extends LoginState {}
+  const LoginState({
+    this.loading = false,
+    this.error = '',
+    this.token,
+  });
+
+  LoginState copyWith({
+    bool? loading,
+    String? error,
+    String? token,
+  }) =>
+      LoginState(
+        loading: loading ?? this.loading,
+        error: error ?? this.error,
+        token: token ?? this.token,
+      );
+
+  @override
+  List<Object?> get props => [loading, error, token];
+}

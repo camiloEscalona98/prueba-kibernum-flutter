@@ -21,7 +21,23 @@ class DetailBody extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Image.network(product.image),
+              Container(
+                constraints: const BoxConstraints(
+                  maxHeight: 300,
+                ),
+                child: Center(
+                  child: FadeInImage(
+                    placeholder: const AssetImage('assets/img/placeholder.png'),
+                    image: NetworkImage(product.image),
+                    fit: BoxFit.contain,
+                    fadeInDuration: const Duration(milliseconds: 500),
+                    fadeOutDuration: const Duration(milliseconds: 300),
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return const Icon(Icons.error);
+                    },
+                  ),
+                ),
+              ),
               const SizedBox(height: 16.0),
               Text(product.title, style: const TextStyle(fontSize: 26.0)),
               const SizedBox(height: 8.0),

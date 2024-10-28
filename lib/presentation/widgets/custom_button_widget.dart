@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 enum ButtonStyleType { primary, secondary, outline, text }
 
 class CustomButton extends StatelessWidget {
@@ -12,6 +10,7 @@ class CustomButton extends StatelessWidget {
   final bool isExpanded;
   final bool hasBorder;
   final Color? color;
+  final bool isLoading;
 
   const CustomButton({
     Key? key,
@@ -22,6 +21,7 @@ class CustomButton extends StatelessWidget {
     this.isExpanded = false,
     this.hasBorder = true,
     this.color,
+    this.isLoading = false,
   }) : super(key: key);
 
   @override
@@ -42,20 +42,29 @@ class CustomButton extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(hasBorder ? 30 : 8),
         child: ElevatedButton(
-          onPressed: onPressed,
+          onPressed: isLoading ? null : onPressed,
           style: buttonStyle.copyWith(
             backgroundColor: MaterialStateProperty.all(Colors.transparent),
           ),
-          child: icon != null
-              ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(icon),
-                    const SizedBox(width: 8),
-                    Text(text),
-                  ],
+          child: isLoading
+              ? const SizedBox(
+                  width: 20,
+                  height: 20,
+                  child: CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                    strokeWidth: 2,
+                  ),
                 )
-              : Text(text),
+              : icon != null
+                  ? Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(icon),
+                        const SizedBox(width: 8),
+                        Text(text),
+                      ],
+                    )
+                  : Text(text),
         ),
       ),
     );

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:prueba_ccu/data/models/product_model.dart';
+
 import 'package:prueba_ccu/logic/blocs/product/product_bloc.dart';
 
-import '../../widgets/widgets.dart';
-import 'widgets/detail_body_widget.dart';
+import 'widgets/widgets.dart';
 
 class DetailsScreen extends StatefulWidget {
   final String id;
@@ -18,6 +17,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   void initState() {
     super.initState();
+    _fetchProduct();
+  }
+
+  void _fetchProduct() {
     context.read<ProductBloc>().add(GetProduct(int.parse(widget.id)));
   }
 
@@ -28,12 +31,17 @@ class _DetailsScreenState extends State<DetailsScreen> {
         if (state.loading) {
           return const Center(child: CircularProgressIndicator());
         } else if (state.error.isNotEmpty) {
-          return Center(child: Text('Error: ${state.error}'));
+          return ErrorMessageWidget(
+            state: state,
+            onPressed: _fetchProduct,
+          );
         } else if (state.product != null) {
-          final product = state.product!;
-          return DetailBody(product: product);
+          return DetailBody(product: state.product!);
         }
-        return const Center(child: Text('No se encontró el producto.'));
+        return ErrorMessageWidget(
+          state: state,
+          onPressed: _fetchProduct,
+        );
       },
     );
   }
