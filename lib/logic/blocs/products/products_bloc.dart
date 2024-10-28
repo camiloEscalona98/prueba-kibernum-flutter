@@ -9,15 +9,26 @@ part 'products_state.dart';
 
 class ProductsBloc extends Bloc<ProductsEvent, ProductsState> {
   late ProductsRepositories productsRepositories;
+
   ProductsBloc() : super(const ProductsState()) {
     productsRepositories = ProductsRepositoriesImpl();
     on<GetAllProducts>((event, emit) async {
       try {
         emit(state.copyWith(loading: true));
         final response = await productsRepositories.getAllProducts();
-        emit(state.copyWith(loading: false, products: response));
+
+        emit(state.copyWith(
+          loading: false,
+          products: response,
+          isEmpty: response.isEmpty,
+          error: '', // Reset error on successful load
+        ));
       } catch (e) {
-        emit(state.copyWith(loading: false, error: e.toString()));
+        emit(state.copyWith(
+          loading: false,
+          error:
+              'No se pudo cargar la información. Verifica tu conexión a internet.',
+        ));
       }
     });
   }

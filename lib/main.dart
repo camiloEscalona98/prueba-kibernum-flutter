@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:prueba_ccu/presentation/screens/details/details_screen.dart';
+import 'package:prueba_ccu/presentation/screens/error/error_screen.dart';
 import 'package:prueba_ccu/presentation/screens/login/login_screen.dart';
 
 import 'package:prueba_ccu/presentation/screens/products/products_screen.dart';
@@ -24,7 +25,6 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: (context) => ProductBloc(),
         )
-        // Añade otros BLoCs aquí
       ],
       child: MaterialApp.router(
         theme: AppTheme.darkTheme,
@@ -34,7 +34,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// Define tu router aquí
 final router = GoRouter(
   debugLogDiagnostics: true,
   initialLocation: '/',
@@ -51,6 +50,10 @@ final router = GoRouter(
       path: '/details/:id',
       builder: (context, state) =>
           DetailsScreen(id: state.pathParameters['id']!),
+    ),
+    GoRoute(
+      path: '/error',
+      builder: (context, state) => const ErrorScreen(),
     ),
   ],
 );
