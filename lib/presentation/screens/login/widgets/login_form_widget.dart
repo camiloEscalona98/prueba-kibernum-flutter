@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 
 import 'package:prueba_ccu/presentation/widgets/custom_button_widget.dart';
 import 'package:prueba_ccu/presentation/widgets/custom_text_field_widget.dart';
 
-import '../../../../utils/utils.dart';
+import '../../../../logic/blocs/blocs.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -17,10 +18,45 @@ class LoginForm extends StatefulWidget {
 class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isLoading = false;
+  bool _rememberMe = false;
 
-  Future<void> login() async {
-    await Future.delayed(const Duration(seconds: 2));
+  @override
+  void initState() {
+    super.initState();
+    _loadCredentials();
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _usernameController.text = prefs.getString('username') ?? '';
+      _passwordController.text = prefs.getString('password') ?? '';
+      _rememberMe = prefs.getBool('rememberMe') ?? false;
+    });
+
+    // Verifica que las credenciales se están cargando correctamente
+    print("Username: ${_usernameController.text}");
+    print("Password: ${_passwordController.text}");
+    print("Remember Me: $_rememberMe");
+  }
+
+  Future<void> _saveCredentials(String username, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (_rememberMe) {
+      await prefs.setString('username', username);
+      await prefs.setString('password', password);
+    } else {
+      await prefs.remove('username');
+      await prefs.remove('password');
+    }
+    await prefs.setBool('rememberMe', _rememberMe);
   }
 
   Future<void> validateInputs() async {
@@ -41,17 +77,13 @@ class _LoginFormState extends State<LoginForm> {
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-    });
+    context.read<LoginBloc>().add(LoginButtonPressed(
+          username: username,
+          password: password,
+        ));
 
-    await login();
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    context.go('/products');
+    // Guardar credenciales si "Recordar contraseña" está marcado
+    await _saveCredentials(username, password);
   }
 
   @override
@@ -62,10 +94,6 @@ class _LoginFormState extends State<LoginForm> {
         CustomTextField(
           hintText: 'Usuario',
           leftIcon: Icons.person,
-          validatorFunction: (value) {
-            Validators.requiredFieldValidator(value);
-            return null;
-          },
           controller: _usernameController,
         ),
         const SizedBox(height: 20),
@@ -73,18 +101,18 @@ class _LoginFormState extends State<LoginForm> {
           isPassword: true,
           hintText: 'Contraseña',
           controller: _passwordController,
-          validatorFunction: (value) {
-            Validators.requiredFieldValidator(value);
-            return null;
-          },
         ),
         const SizedBox(height: 10),
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Checkbox(
-              value: true,
-              onChanged: (bool? value) {},
+              value: _rememberMe,
+              onChanged: (bool? value) {
+                setState(() {
+                  _rememberMe = value ?? false;
+                });
+              },
             ),
             const Text('Recordar contraseña'),
           ],
@@ -93,7 +121,6 @@ class _LoginFormState extends State<LoginForm> {
           text: 'Iniciar Sesión',
           isExpanded: true,
           hasBorder: false,
-          isLoading: _isLoading,
           onPressed: validateInputs,
           styleType: ButtonStyleType.primary,
         )

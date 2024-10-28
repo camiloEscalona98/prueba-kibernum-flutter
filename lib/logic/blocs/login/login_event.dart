@@ -1,11 +1,13 @@
-// login_event.dart
-part of 'login_bloc.dart'; // Only if this file is part of a library
+part of 'login_bloc.dart';
 
-abstract class LoginEvent {}
+abstract class LoginEvent extends Equatable {
+  const LoginEvent();
 
-class LoginWithCredentials extends LoginEvent {
-  final String username;
-  final String password;
+  @override
+  List<Object> get props => [];
+}
 
-  LoginWithCredentials({required this.username, required this.password});
+class LoginButtonPressed extends LoginEvent {
+  final String username, password;
+  const LoginButtonPressed({required this.username, required this.password});
 }
