@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:prueba_ccu/logic/blocs/product/product_bloc.dart';
+import 'package:prueba_ccu/presentation/widgets/widgets.dart';
 
 import 'widgets/widgets.dart';
 
@@ -29,7 +30,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
     return BlocBuilder<ProductBloc, ProductState>(
       builder: (context, state) {
         if (state.loading) {
-          return const Center(child: CircularProgressIndicator());
+          return const Center(
+              child: CustomScaffold(
+                  body: Center(child: CircularProgressIndicator())));
         } else if (state.error.isNotEmpty) {
           return ErrorMessageWidget(
             state: state,

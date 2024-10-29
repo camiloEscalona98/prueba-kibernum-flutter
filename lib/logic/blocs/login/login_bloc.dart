@@ -1,12 +1,12 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Importa las partes de tu archivo.
+import '../../../utils/utils.dart';
+
 part 'login_event.dart';
 part 'login_state.dart';
-
-// Importa las partes de tu archivo.
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final Dio _dio;
@@ -16,7 +16,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(LoginInProgress());
       try {
         final response = await _dio.post(
-          'https://fakestoreapi.com/auth/login',
+          '${Constants.apiUrl}/auth/login',
           data: {
             "username": event.username,
             "password": event.password,
@@ -24,12 +24,21 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
 
         if (response.statusCode == 200) {
+          final token = response.data['token'];
+
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.setString('auth_token', token);
+
           emit(LoginSuccessful());
         } else {
-          emit(LoginFailure(errorMessage: 'Login failed. Please try again.'));
+          emit(const LoginFailure(
+              errorMessage:
+                  'Error de inicio de sesión. Por favor, inténtelo de nuevo.'));
         }
       } catch (e) {
-        emit(LoginFailure(errorMessage: 'An error occurred: ${e.toString()}'));
+        emit(const LoginFailure(
+            errorMessage:
+                'Error de inicio de sesión. Por favor, inténtelo de nuevo.'));
       }
     });
   }

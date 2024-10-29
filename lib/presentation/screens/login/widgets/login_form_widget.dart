@@ -19,6 +19,7 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool _rememberMe = false;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -40,11 +41,6 @@ class _LoginFormState extends State<LoginForm> {
       _passwordController.text = prefs.getString('password') ?? '';
       _rememberMe = prefs.getBool('rememberMe') ?? false;
     });
-
-    // Verifica que las credenciales se están cargando correctamente
-    print("Username: ${_usernameController.text}");
-    print("Password: ${_passwordController.text}");
-    print("Remember Me: $_rememberMe");
   }
 
   Future<void> _saveCredentials(String username, String password) async {
@@ -77,13 +73,23 @@ class _LoginFormState extends State<LoginForm> {
       return;
     }
 
+    setState(() {
+      _isLoading = true;
+    });
+
+    // Simular llamada a API
+    await Future.delayed(Duration(seconds: 2));
+
     context.read<LoginBloc>().add(LoginButtonPressed(
           username: username,
           password: password,
         ));
 
-    // Guardar credenciales si "Recordar contraseña" está marcado
     await _saveCredentials(username, password);
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -118,12 +124,13 @@ class _LoginFormState extends State<LoginForm> {
           ],
         ),
         CustomButton(
-          text: 'Iniciar Sesión',
+          text: _isLoading ? '' : 'Iniciar Sesión',
           isExpanded: true,
           hasBorder: false,
+          isLoading: _isLoading,
           onPressed: validateInputs,
           styleType: ButtonStyleType.primary,
-        )
+        ),
       ],
     );
   }

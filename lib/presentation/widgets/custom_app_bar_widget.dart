@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 AppBar customAppBar(BuildContext context, String title) {
   return AppBar(
@@ -14,5 +16,18 @@ AppBar customAppBar(BuildContext context, String title) {
       ),
     ),
     centerTitle: true,
+    actions: [
+      IconButton(
+        icon: const Icon(
+          Icons.logout,
+          color: Colors.white,
+        ),
+        onPressed: () async {
+          final prefs = await SharedPreferences.getInstance();
+          await prefs.remove('auth_token');
+          context.go('/');
+        },
+      )
+    ],
   );
 }

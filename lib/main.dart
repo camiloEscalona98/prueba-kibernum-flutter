@@ -1,22 +1,29 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
-import 'package:prueba_ccu/presentation/screens/details/details_screen.dart';
-import 'package:prueba_ccu/presentation/screens/error/error_screen.dart';
-import 'package:prueba_ccu/presentation/screens/login/login_screen.dart';
-
-import 'package:prueba_ccu/presentation/screens/products/products_screen.dart';
 
 import 'logic/blocs/blocs.dart';
+import 'presentation/screens/routes.dart';
 import 'utils/utils.dart';
 
-void main() {
-  runApp(const MyApp());
+import 'package:shared_preferences/shared_preferences.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final initialRoute = await determineInitialRoute();
+  runApp(MyApp(initialRoute: initialRoute));
+}
+
+Future<String> determineInitialRoute() async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('auth_token');
+  return token != null ? '/products' : '/';
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final String initialRoute;
+
+  const MyApp({Key? key, required this.initialRoute}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,36 +35,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => ProductsBloc()),
         BlocProvider(
           create: (context) => ProductBloc(),
-        )
+        ),
       ],
       child: MaterialApp.router(
         theme: AppTheme.darkTheme,
-        routerConfig: router,
+        routerConfig: createRouter(initialRoute),
       ),
     );
   }
 }
-
-final router = GoRouter(
-  debugLogDiagnostics: true,
-  initialLocation: '/',
-  routes: [
-    GoRoute(
-      path: '/',
-      builder: (context, state) => const LoginScreen(),
-    ),
-    GoRoute(
-      path: '/products',
-      builder: (context, state) => const ProductsScreen(),
-    ),
-    GoRoute(
-      path: '/details/:id',
-      builder: (context, state) =>
-          DetailsScreen(id: state.pathParameters['id']!),
-    ),
-    GoRoute(
-      path: '/error',
-      builder: (context, state) => const ErrorScreen(),
-    ),
-  ],
-);
