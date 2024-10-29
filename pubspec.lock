@@ -280,14 +280,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.1.2"
-  remove_bg:
-    dependency: "direct main"
-    description:
-      name: remove_bg
-      sha256: d4bac0ffa82101436459efb6c59bbd6c79046ddf9fa1be2ef64a7576c96b982b
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.3"
   shared_preferences:
     dependency: "direct main"
     description:
