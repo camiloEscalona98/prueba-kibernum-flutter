@@ -9,6 +9,8 @@ Este proyecto consiste en la realización de una prueba para el proceso Dev Mobi
 - **Lottie**: Para la visualización de animaciones.
 - **Go Router**: Para la navegación entre vistas.
 - **Shared Preferences**: Para almacenar tokens y credenciales.
+- **API**: [fakesApi](https://fakestoreapi.com/docs).
+
 
 
 ## Instalación
@@ -18,9 +20,11 @@ Este proyecto consiste en la realización de una prueba para el proceso Dev Mobi
 
 2. Corre desde consola flutter run
 
-## Descarga
-- También puedes descargar el APK desde la siguiente dirección: 
-![Descarga](https://drive.google.com/file/d/1YMofeqJUw7flFXZJUy5miJlq7FctGGEN/view?usp=drive_link)
+## Descarga del APK
+
+Puedes descargar el APK de la aplicación desde el siguiente enlace:
+
+[Descargar APK](https://drive.google.com/file/d/1YMofeqJUw7flFXZJUy5miJlq7FctGGEN/view?usp=sharing)
 
 Nota: Al instalar la aplicación, es probable que Android solicite permisos adicionales para permitir la instalación de aplicaciones de fuentes externas. Asegúrate de habilitar la opción de instalar aplicaciones desde fuentes desconocidas en la configuración de tu dispositivo.
 
@@ -31,23 +35,13 @@ La aplicación se ha diseñado con una arquitectura Modelo-Vista-Servicio para d
 - **Infinite Scroll**: Se podría haber implementado un sistema de scroll infinito, pero se descartó debido a que la API entrega pocos datos.
 - **Traducciones**: No se integraron traducciones, ya que este es un proyecto de prueba.
 
-## Imágenes y video
+## Recursos Visuales
 
-### Pantalla de Inicio de Sesión
-![Login](https://drive.google.com/uc?id=1NlUPm2Kbynf5ow8Y47cBoyjW_z9S-dFD)
+Para ver imágenes y un video del funcionamiento de la aplicación, visita el siguiente enlace:
 
-### Lista de Productos
-![Productos](https://drive.google.com/uc?id=14HDB8u399MDXWs7kK-HVIZooO2eLLzio)
+[Imágenes y Video de la Aplicación](https://drive.google.com/drive/folders/1_sM5rz4L3e0A64v3FUzapEDxm11P7PGH?usp=sharing)
 
-### Detalles del Producto
-![Detalles](https://drive.google.com/uc?id=1sPFe7w2kstZCPkmPOqWSPTMDO6Wa9gKi)
-
-### Mensaje de Error
-![Error](https://drive.google.com/uc?id=1ctXU2xK16EGaAuCc3R4t8pP0dFtArYxI)
-
-## Video de Demostración
-[Video de Demostración](https://drive.google.com/file/d/1wCTWfaZYhGoRhETY-Jq81LyQK-6DpUuF/view?usp=drive_link)
-
+En este enlace podrás observar cómo funciona la aplicación.
 
 
 ## Contacto
