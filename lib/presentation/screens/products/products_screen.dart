@@ -34,14 +34,13 @@ class _ProductsScreenState extends State<ProductsScreen> {
                 const SizedBox(height: 20),
                 if (state.error.isNotEmpty)
                   // Vista de error
-                  ErrorWidget(
+                  ErrorMessageWidget(
                     text: 'Error de conexión: ${state.error}',
                     onPressed: () {
                       context.read<ProductsBloc>().add(GetAllProducts());
                     },
                   )
                 else if (state.isEmpty)
-                  // Vista para cuando la lista está vacía
                   Column(
                     children: [
                       const Text(
@@ -61,7 +60,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
                     ],
                   )
                 else
-                  // Vista para mostrar los productos
                   ProductGridView(
                     isLoading: state.loading,
                     state: state,
@@ -72,44 +70,6 @@ class _ProductsScreenState extends State<ProductsScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class ErrorWidget extends StatelessWidget {
-  final void Function() onPressed;
-  final String text;
-  const ErrorWidget({
-    super.key,
-    required this.onPressed,
-    required this.text,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: 150),
-        Text(
-          text,
-          style: const TextStyle(fontSize: 24, color: Colors.red),
-          textAlign: TextAlign.center,
-        ),
-        const SizedBox(height: 30),
-        Lottie.asset(
-          'assets/lottie/error.json',
-          width: 300,
-          height: 200,
-          fit: BoxFit.fill,
-        ),
-        const SizedBox(height: 50),
-        CustomButton(
-            text: 'Recargar productos',
-            hasBorder: false,
-            isExpanded: true,
-            styleType: ButtonStyleType.primary,
-            onPressed: onPressed)
-      ],
     );
   }
 }

@@ -5,4 +5,11 @@ class Validators {
     }
     return null;
   }
+
+  static String? passwordValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'La contraseña no puede estar vacía';
+    }
+    return null;
+  }
 }

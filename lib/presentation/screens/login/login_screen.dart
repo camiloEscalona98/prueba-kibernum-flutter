@@ -6,6 +6,7 @@ import 'package:prueba_ccu/presentation/screens/login/widgets/login_form_widget.
 import 'package:prueba_ccu/presentation/widgets/custom_scaffold_widget.dart';
 
 import '../../../logic/blocs/blocs.dart';
+import '../../../utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,9 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
         } else if (state is LoginSuccessful) {
           context.go('/products');
         } else if (state is LoginFailure) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Error al iniciar sesión')),
-          );
+          showSnackBar(context, 'Error al iniciar sesión');
         }
       },
       child: const CustomScaffold(

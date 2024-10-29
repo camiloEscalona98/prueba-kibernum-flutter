@@ -9,7 +9,7 @@ part 'product_state.dart';
 
 class ProductBloc extends Bloc<ProductEvent, ProductState> {
   late ProductsRepositories productsRepositories;
-
+  //peticion a la api
   ProductBloc() : super(const ProductState()) {
     productsRepositories = ProductsRepositoriesImpl();
     on<GetProduct>((event, emit) async {
@@ -21,8 +21,8 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
         emit(state.copyWith(
           loading: false,
           product: response,
-          isEmpty: response == null,
-          error: '', // Limpiar el error si la carga es exitosa
+          isEmpty: false,
+          error: '',
         ));
       } catch (e) {
         emit(state.copyWith(

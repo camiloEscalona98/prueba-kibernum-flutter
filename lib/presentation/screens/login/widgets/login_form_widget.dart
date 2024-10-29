@@ -8,6 +8,8 @@ import '../../../../logic/blocs/blocs.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../utils/utils.dart';
+
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
 
@@ -59,27 +61,23 @@ class _LoginFormState extends State<LoginForm> {
     final username = _usernameController.text.trim();
     final password = _passwordController.text.trim();
 
-    if (username.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('El usuario no puede estar vacío')),
-      );
+    final usernameError = Validators.requiredFieldValidator(username);
+    if (usernameError != null) {
+      showSnackBar(context, usernameError);
       return;
     }
 
-    if (password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('La contraseña no puede estar vacía')),
-      );
+    final passwordError = Validators.passwordValidator(password);
+    if (passwordError != null) {
+      showSnackBar(context, passwordError);
       return;
     }
 
     setState(() {
       _isLoading = true;
     });
-
-    // Simular llamada a API
-    await Future.delayed(Duration(seconds: 2));
-
+    //delayed para simular el tiempo de espera
+    await Future.delayed(const Duration(seconds: 1));
     context.read<LoginBloc>().add(LoginButtonPressed(
           username: username,
           password: password,

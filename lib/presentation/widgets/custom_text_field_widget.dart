@@ -19,10 +19,10 @@ class CustomTextField extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _CustomTextFieldState createState() => _CustomTextFieldState();
+  CustomTextFieldState createState() => CustomTextFieldState();
 }
 
-class _CustomTextFieldState extends State<CustomTextField> {
+class CustomTextFieldState extends State<CustomTextField> {
   bool _isObscured = true;
 
   @override
@@ -58,7 +58,6 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 : null,
           ),
         ),
-        // Puedes agregar aquí mensajes de error o validación si lo deseas.
       ],
     );
   }

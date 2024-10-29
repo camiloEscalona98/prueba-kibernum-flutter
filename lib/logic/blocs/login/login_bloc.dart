@@ -10,11 +10,12 @@ part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final Dio _dio;
-
+  //metodo para realizar llamado a API
   LoginBloc(this._dio) : super(LoginInitial()) {
     on<LoginButtonPressed>((event, emit) async {
       emit(LoginInProgress());
       try {
+        //peticion post
         final response = await _dio.post(
           '${Constants.apiUrl}/auth/login',
           data: {
@@ -24,8 +25,10 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         );
 
         if (response.statusCode == 200) {
+          //obtener token
           final token = response.data['token'];
 
+          //almacenar token
           final prefs = await SharedPreferences.getInstance();
           await prefs.setString('auth_token', token);
 
